@@ -26,7 +26,7 @@ const winSound = new Audio("win.mp3");
 
 // === Game Variables ===
 let bird, poles, score, gameOver, gameWon, frame, started;
-let speed = 1.2; // balanced speed for both PC and mobile
+let speed = 1.0; // balanced speed for both PC and mobile
 
 // === Init Game ===
 function initGame() {
@@ -35,7 +35,7 @@ function initGame() {
     y: canvas.height / 2,
     width: 34,
     height: 34,
-    gravity: 0.27,
+    gravity: 0.25,
     lift: isMobile ? -5.0 : -7.0, // mobile softer jump
     velocity: 0,
   };
@@ -208,6 +208,7 @@ restartBtn.addEventListener("click", restartGame);
 document.addEventListener("keydown", jump);
 canvas.addEventListener("touchstart", jump);
 canvas.addEventListener("mousedown", jump);
+
 
 
 
