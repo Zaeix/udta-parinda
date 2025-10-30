@@ -167,11 +167,11 @@ function showPopup(won) {
 
   if (won) {
     popupImage.src = winImg;
-    popupText.textContent = "Abe Tu Jeet Kise Gya";
+    popupText.textContent = "Abe Tu Jeet Kise Gya 🤣";
     winSound.play();
   } else {
     popupImage.src = loseImg;
-    popupText.textContent = "You lost my friend, Try Again";
+    popupText.textContent = "Hakla Se Koi Nahi Bach Sakta,Try Again🥱";
     loseSound.play();
   }
 }
@@ -208,6 +208,7 @@ restartBtn.addEventListener("click", restartGame);
 document.addEventListener("keydown", jump);
 canvas.addEventListener("touchstart", jump);
 canvas.addEventListener("mousedown", jump);
+
 
 
 
