@@ -6,6 +6,9 @@ const popupImage = document.getElementById("popupImage");
 const popupText = document.getElementById("popupText");
 const restartBtn = document.getElementById("restartBtn");
 
+// === Detect mobile ===
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 // === Images ===
 const birdImg = new Image();
 birdImg.src = "icon.png";
@@ -23,17 +26,17 @@ const winSound = new Audio("win.mp3");
 
 // === Game Variables ===
 let bird, poles, score, gameOver, gameWon, frame, started;
-let speed = 1.5; // balanced for mobile & PC
+let speed = 1.5; // balanced speed for both PC and mobile
 
-// === Init ===
+// === Init Game ===
 function initGame() {
   bird = {
     x: 60,
     y: canvas.height / 2,
     width: 34,
     height: 34,
-    gravity: 0.32, // slightly stronger gravity
-    lift: -7.0,    // balanced jump
+    gravity: 0.32,
+    lift: isMobile ? -6.5 : -7.0, // mobile softer jump
     velocity: 0,
   };
   poles = [];
@@ -44,10 +47,10 @@ function initGame() {
   popup.classList.add("hidden");
   started = true;
 
-  // Pole generation (easy to medium)
+  // Generate poles
   let distance = 280;
   for (let i = 0; i < 25; i++) {
-    let gap = i < 10 ? 180 : i < 20 ? 160 : 140;
+    let gap = i < 10 ? 180 : i < 20 ? 160 : 140; // easy to medium
     let top = Math.random() * 100 + 70;
     poles.push({
       x: distance,
@@ -55,17 +58,17 @@ function initGame() {
       top: top,
       bottom: canvas.height - top - gap,
     });
-    distance += 250 - i * 2;
+    distance += 250 - i * 2; // gradually closer
   }
-  poles.push({ x: distance, finish: true });
+  poles.push({ x: distance, finish: true }); // finish line
 
   stopAllAudio();
   bgMusic.currentTime = 0;
-try {
-  bgMusic.play();
-} catch (err) {
-  console.warn("Autoplay blocked until user interaction:", err);
-}
+  try {
+    bgMusic.play(); // Safe play for GitHub Pages
+  } catch (err) {
+    console.warn("Autoplay blocked until user interaction:", err);
+  }
 
   gameLoop();
 }
@@ -73,18 +76,24 @@ try {
 // === Jump ===
 function jump() {
   if (!started) return;
-  if (!gameOver && !gameWon) bird.velocity = bird.lift;
+  if (!gameOver && !gameWon) {
+    bird.velocity = bird.lift;
+  }
 }
 
 // === Restart ===
 function restartGame() {
   popup.classList.add("hidden");
   stopAllAudio();
-  bgMusic.play();
+  try {
+    bgMusic.play();
+  } catch (err) {
+    console.warn("Autoplay blocked until user interaction:", err);
+  }
   initGame();
 }
 
-// === Stop all sounds ===
+// === Stop All Sounds ===
 function stopAllAudio() {
   [bgMusic, loseSound, winSound].forEach((s) => {
     s.pause();
@@ -144,6 +153,7 @@ function checkCollision() {
     }
   }
 
+  // hit top or bottom
   if (bird.y + bird.height / 2 > canvas.height || bird.y - bird.height / 2 < 0) {
     gameOver = true;
     showPopup(false);
