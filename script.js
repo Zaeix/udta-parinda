@@ -35,7 +35,7 @@ function initGame() {
     y: canvas.height / 2,
     width: 34,
     height: 34,
-    gravity: 0.32,
+    gravity: 0.30,
     lift: isMobile ? -6.2 : -7.0, // mobile softer jump
     velocity: 0,
   };
@@ -208,4 +208,5 @@ restartBtn.addEventListener("click", restartGame);
 document.addEventListener("keydown", jump);
 canvas.addEventListener("touchstart", jump);
 canvas.addEventListener("mousedown", jump);
+
 
